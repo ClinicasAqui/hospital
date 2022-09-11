@@ -9,6 +9,8 @@ import InputMask from "react-input-mask";
 import { IRegisterClient } from "../../../interfaces/authInteface/authInterface";
 
 export const RegisterClient = () => {
+  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
+
   const formSchema = yup.object().shape({
     name: yup.string().required("Nome obrigatório"),
     email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
@@ -19,7 +21,22 @@ export const RegisterClient = () => {
       .oneOf([yup.ref("password"), null], "As senhas não são iguais"),
     telefone: yup.string().required("Telefone obrigatória"),
     idade: yup.string().required("Idade obrigatória"),
-    cep: yup.string().required("Idade obrigatória"),
+    image: yup
+      .mixed()
+      .required("Imagem obrigatória")
+      .test("file", "Imagem obrigatória", (value) => {
+        return value && value.length !== 0;
+      })
+      .test("fileSize", "Imagem muito pesada", (value) => {
+        return value[0] && value[0].size <= 2000000;
+      })
+      .test(
+        "fileFormat",
+        "imagem somente do tipo: .jpg, .jpeg, .png",
+        (value) => value[0] && SUPPORTED_FORMATS.includes(value[0].type)
+      ),
+    cep: yup.string().required("Cep obrigatória"),
+    numero: yup.string().required("Número obrigatória"),
   });
 
   const [cep, setCep] = useState("");
@@ -72,6 +89,16 @@ export const RegisterClient = () => {
       />
       <span>
         <>{errors.idade?.message}</>
+      </span>
+      <label htmlFor="image">Imagem</label>
+      <input
+        type="file"
+        {...register("image")}
+        placeholder="image"
+        id="image"
+      />
+      <span>
+        <>{errors.image?.message}</>
       </span>
       <label htmlFor="cpf">CPF</label>
       <InputMask

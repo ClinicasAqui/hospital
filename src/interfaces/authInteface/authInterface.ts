@@ -21,6 +21,7 @@ export interface IRegisterClient{
     password: string;
     confiPass: string;
     idade: string;
+    image: File;
     cpf: string;
     telefone: string;
     cep: string;

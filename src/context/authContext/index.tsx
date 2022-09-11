@@ -21,10 +21,12 @@ export function AuthContext({children}: IAuthContext){
     }
 
     const registerClient = (data: IRegisterClient) => {
-        const {name, email, password, idade, cpf, telefone, cep, loradouro, bairro, localidade, uf, numero} = data
-        toast.promise(apiFake.post("/register", {name, email, password, idade, cpf, telefone, endereco: { cep, loradouro, bairro, localidade, uf, numero }}).then((res) => {
+        console.log(data.image)
+        const {name, email, password, idade, image, cpf, telefone, cep, loradouro, bairro, localidade, uf, numero} = data
+        toast.promise(apiFake.post("/register", {name, email, password, idade, image, cpf, telefone, endereco: { cep, loradouro, bairro, localidade, uf, numero }}).then((res) => {
             localStorage.setItem("@Token", res.data.accessToken)
             localStorage.setItem("@Id_User", res.data.user.id)
+            console.log(res.data)
         }),{
             pending: "Carregando...",
             success: "Logado com sucesso",
