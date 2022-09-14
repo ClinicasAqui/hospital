@@ -49,7 +49,7 @@ export const RegisterClient = () => {
   const { registerClient } = useContext(AuthContextProvier);
 
   useEffect(() => {
-    cep.replace(/([^\d])+/gim, "").length == 8
+    cep.replace(/([^\d])+/gim, "").length === 8
       ? apiCep
           .get(`${cep.replace(/([^\d])+/gim, "")}/json/`)
           .then((res: IApiCepResponse) => {
