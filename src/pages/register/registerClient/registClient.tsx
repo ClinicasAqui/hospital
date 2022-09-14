@@ -76,7 +76,7 @@ export const RegisterClient = () => {
   return (
     <form onSubmit={handleSubmit(registerClient)}>
       <label htmlFor="name">Nome</label>
-      <input type="text" {...register("name")} placeholder="Nome" id="name" />
+      <input type="text" {...register("name")} placeholder="Seu nome" id="name" />
       <span>
         <>{errors.name?.message}</>
       </span>
@@ -84,7 +84,7 @@ export const RegisterClient = () => {
       <input
         type="text"
         {...register("idade")}
-        placeholder="Idade"
+        placeholder="Digite sua idade ex: 19"
         id="idade"
       />
       <span>
@@ -94,7 +94,6 @@ export const RegisterClient = () => {
       <input
         type="file"
         {...register("image")}
-        placeholder="image"
         id="image"
       />
       <span>
@@ -105,7 +104,7 @@ export const RegisterClient = () => {
         mask={"999.999.999-99"}
         type="text"
         {...register("cpf")}
-        placeholder="cpf"
+        placeholder="Seu CPF ex: 999.999.999-99"
         id="cpf"
       />
       <span>
@@ -125,7 +124,7 @@ export const RegisterClient = () => {
       <input
         type="password"
         {...register("password")}
-        placeholder="Senha"
+        placeholder="Digite sua senha"
         id="password"
       />
       <span>
@@ -135,7 +134,7 @@ export const RegisterClient = () => {
       <input
         type="password"
         {...register("confiPass")}
-        placeholder="Confirme a senha"
+        placeholder="Confirme sua senha"
         id="confiPass"
       />
       <span>
@@ -146,8 +145,18 @@ export const RegisterClient = () => {
         mask={"(99) 99999-9999"}
         type="text"
         {...register("telefone")}
-        placeholder="Telefone"
+        placeholder="Telefone ex: (99) 99999-9999"
         id="Telefone"
+      />
+      <span>
+        <>{errors.telefone?.message}</>
+      </span>
+      <label htmlFor="planos">Planos De Saude</label>
+      <input
+        type="text"
+        {...register("planos")}
+        placeholder="Planos De Saude ex: UniMed"
+        id="planos"
       />
       <span>
         <>{errors.telefone?.message}</>
@@ -157,7 +166,7 @@ export const RegisterClient = () => {
         mask={"99.999-999"}
         type="text"
         {...register("cep")}
-        placeholder="cep"
+        placeholder="Cep: ex 13.606-412"
         id="cep"
         onChange={(ev) => setCep(ev.target.value)}
         value={cep}

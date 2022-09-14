@@ -23,6 +23,7 @@ export interface IRegisterClient{
     idade: string;
     image: File;
     cpf: string;
+    planos?: string
     telefone: string;
     cep: string;
     loradouro: string;
