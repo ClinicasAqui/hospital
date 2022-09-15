@@ -6,6 +6,7 @@ import { IoMdEye } from "react-icons/io";
 import { IoIosEyeOff } from "react-icons/io";
 import { AuthContextProvier } from "../../context/authContext";
 import { CardCl } from "../../components/cardClinic";
+import { Header } from "../../components/header";
 
 export const Login = () => {
   const [visible, setVisible] = useState(false);
@@ -25,6 +26,7 @@ export const Login = () => {
 
   return (
     <>
+      <Header input={true} />
       <form onSubmit={handleSubmit(singIn)}>
         <label htmlFor="email">Email</label>
         <input
