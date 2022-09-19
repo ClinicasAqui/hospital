@@ -102,7 +102,7 @@ export function Header({ input }: IInput): ReactElement {
       <ConteinerAvatar>
         {input && (
           <Box className="conteinerInput">
-            <button>
+            <button className="buttonInput">
                 <SearchIcon />
             </button>
             <input

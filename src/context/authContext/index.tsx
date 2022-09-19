@@ -4,18 +4,23 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   IAuthContext,
   IAuthContextProvier,
+  IParamsValidateEmail,
   IRegisterClient,
   ISingIn,
 } from "../../interfaces/authInteface/authInterface";
 import { apiFake } from "../../services/apifake";
 import { FieldValue } from "react-hook-form/dist/types";
 import { IResponseLogin } from "../../interfaces/apiInterface/apiInterface";
+import { apiHospital } from "../../services/apiHospital";
+import { AxiosResponse } from "axios";
 
 export const AuthContextProvier = createContext<IAuthContextProvier>(
   {} as IAuthContextProvier
 );
 
 export function AuthContext({ children }: IAuthContext) {
+  const [message, setMessage] = useState("")
+
   const singIn = (data: FieldValue<ISingIn>) => {
     toast.promise(
       apiFake.post("/login", data).then((res: IResponseLogin) => {
@@ -31,50 +36,50 @@ export function AuthContext({ children }: IAuthContext) {
   };
 
   const registerClient = (data: IRegisterClient) => {
-    console.log(data.image);
     const {
       name,
       email,
       password,
-      idade,
-      planos,
-      image,
+      age,
       cpf,
-      telefone,
-      cep,
-      loradouro,
-      bairro,
-      localidade,
-      uf,
-      numero,
     } = data;
+    const ParseAge = Number(age)
     toast.promise(
-      apiFake
-        .post("/register", {
+      apiHospital
+        .post("user", {
           name,
           email,
           password,
-          idade,
-          image,
           cpf,
-          telefone,
-          endereco: { cep, loradouro, bairro, localidade, uf, numero },
+          age: ParseAge,
         })
         .then((res) => {
-          localStorage.setItem("@Token", res.data.accessToken);
-          localStorage.setItem("@Id_User", res.data.user.id);
+          
           console.log(res.data);
         }),
       {
         pending: "Carregando...",
-        success: "Logado com sucesso",
+        success: "Registrado com sucesso com sucesso",
         error: "Email ou Senha incorreto",
       }
     );
   };
 
+  function validateEmail( tokenEmail : IParamsValidateEmail) {
+    apiHospital.post(`auth/verify/user/${tokenEmail}`)
+      .then((data: AxiosResponse) => {
+        setMessage("Checked");
+        console.log(data.data);
+      })
+      .catch((error: AxiosResponse) => {
+        setMessage("Error");
+        console.log(error.data);
+      });
+      console.log(tokenEmail)
+    return message
+  }
   return (
-    <AuthContextProvier.Provider value={{ singIn, registerClient }}>
+    <AuthContextProvier.Provider value={{ singIn, registerClient, message, validateEmail }}>
       {children}
     </AuthContextProvier.Provider>
   );

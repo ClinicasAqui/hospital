@@ -1,17 +1,80 @@
 export interface ICL {
     cl: {
-        id: number;
-        idCl: number;
-        nomeCl: string;
-        img: string[]
-        endereço: {
-            Rua: string;
-            Numero: string;
-            Bairro: string;
-            Cidade: string;
-            Cep: string;
+        id: string;
+        name: string;
+        cnpj: string;
+        authenticated: boolean;
+        descripition: string;
+        avatar: string;
+        phone: string;
+        createdAt: string;
+        updatedAt: string;
+        CorporationName: string;
+        clinicAddress: {
+          country: string;
+          city: string;
+          state: string;
+          zipCode: string;
+          distict: string;
+          way: string;
+          number: string;
+          createdAt: string;
+          updatedAt: string;
+          ClinicsName: string;
         };
-        descricao: string;
-        tratamento: string;
+        clinicImages: [
+          {
+            id: string;
+            link: string;
+            width: string;
+            height: string;
+            createdAt: string;
+            updatedAt: string;
+            clinicName: string;
+          }
+        ];
+        category: [
+          {
+            categoryName: string;
+            clinicName: string;
+            createdAt: string;
+          }
+        ];
+        clinicRating:
+          | [
+              {
+                id: string;
+                user: string | null;
+                userName: string | null;
+                userAvatar: string | null;
+                title: string | null;
+                message: string | null;
+                rating: string;
+                createdAt: string;
+                updatedAt: string;
+                deleted: boolean;
+                ClinicsName: string;
+              }
+            ]
+          | [];
+        corporation: {
+          id: string;
+          corporation: string;
+        };
+        healthPlan: [
+          {
+            healthPlanName: string;
+            clinicName: string;
+            assignedAt: string;
+          }
+        ];
+        insurance: [
+          {
+            treatmentsName: string;
+            clinicName: string;
+            assignedAt: string;
+          }
+        ];
+        ratingReply: [];
     } 
 }
