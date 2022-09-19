@@ -4,6 +4,8 @@ import { FieldValue } from "react-hook-form/dist/types";
 export interface IAuthContextProvier {
     singIn: (data: FieldValue<ISingIn>) => void;
     registerClient: (data: IRegisterClient) => void;
+    validateEmail: (tokenEmail: IParamsValidateEmail) => string;
+    message:  string;
 }
 
 export interface IAuthContext {
@@ -20,15 +22,10 @@ export interface IRegisterClient{
     email: string;
     password: string;
     confiPass: string;
-    idade: string;
-    image: File;
+    age: string;
     cpf: string;
-    planos?: string
-    telefone: string;
-    cep: string;
-    loradouro: string;
-    bairro: string;
-    localidade: string;
-    uf: string;
-    numero: string;
 }
+
+export interface IParamsValidateEmail {
+    tokenEmail: any;
+  }
