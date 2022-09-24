@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { isGeneratorFunction } from "util/types";
 import { Header } from "../../components/header";
 import { IResponseClinica } from "../../interfaces/apiInterface/apiInterface";
 import { apiHospital } from "../../services/apiHospital";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, EffectCoverflow, Autoplay, Pagination } from "swiper";
-import { DivCarrosel} from "./styled";
+import { DivCarrosel } from "./styled";
 
 export function ClinicaPage(): ReactElement {
   const { id } = useParams();
@@ -14,6 +13,8 @@ export function ClinicaPage(): ReactElement {
     {} as IResponseClinica
   );
   const [loading, setLoading] = useState(true);
+  const [userExist, setUserExist] = useState(false);
+
 
   useEffect(() => {
     apiHospital
@@ -84,37 +85,42 @@ export function ClinicaPage(): ReactElement {
             </Swiper>
           </DivCarrosel>
           <h2>Localizão</h2>
-          <div
-            style={{
-              position: "relative",
-              height: "500px",
-              width: "600px",
-              textAlign: "right",
-            }}
-          >
+          {
+            !userExist ?
             <div
               style={{
-                overflow: "hidden",
-                background: "none",
+                position: "relative",
                 height: "500px",
                 width: "600px",
+                textAlign: "right",
               }}
             >
-              <iframe
-                width="600"
-                height="500"
-                id="gmap_canvas"
-                src={`https://maps.google.com/maps?q=${
-                  clinica.clinicAddress.zipCode
-                }%20${clinica.clinicAddress.way.replace(/ /g, "%20")},%20${
-                  clinica.clinicAddress.number
-                }&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-                scrolling="no"
-              ></iframe>
-              <a href="https://www.whatismyip-address.com"></a>
-              <br />
+              <div
+                style={{
+                  overflow: "hidden",
+                  background: "none",
+                  height: "500px",
+                  width: "600px",
+                }}
+              >
+                <iframe
+                  width="600"
+                  height="500"
+                  id="gmap_canvas"
+                  src={`https://maps.google.com/maps?q=${
+                    clinica.clinicAddress.zipCode
+                  }%20${clinica.clinicAddress.way.replace(/ /g, "%20")},%20${
+                    clinica.clinicAddress.number
+                  }&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                  scrolling="no"
+                ></iframe>
+                <a href="https://www.whatismyip-address.com"></a>
+                <br />
+              </div>
             </div>
-          </div>
+            :
+            <></>
+          }
         </div>
       )}
     </>

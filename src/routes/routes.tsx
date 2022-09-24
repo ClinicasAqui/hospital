@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import { HomeContext } from "../context/HomeContex";
 import { ClinicaPage } from "../pages/clinicaPage";
+import { EmailVerify } from "../pages/emailcheckPage";
 import EmailChecker from "../pages/emailVerific";
 import { HomePage } from "../pages/home";
 import { Login } from "../pages/login";
@@ -13,6 +14,7 @@ export default function RoutesMain() {
         <Route path="/" element={<HomeContext><HomePage/></HomeContext>} />
         <Route path="/login" element={<AuthContext><Login/></AuthContext>} />
         <Route path="/register" element={<AuthContext><RegisterClient/></AuthContext>} />
+        <Route path="/verify" element={<EmailVerify/>} />
         <Route path="/clinica/:id" element={<ClinicaPage/>} />
         <Route
 				path='/emailChecker/:tokenEmail'

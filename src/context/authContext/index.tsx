@@ -13,6 +13,7 @@ import { FieldValue } from "react-hook-form/dist/types";
 import { IResponseLogin } from "../../interfaces/apiInterface/apiInterface";
 import { apiHospital } from "../../services/apiHospital";
 import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContextProvier = createContext<IAuthContextProvier>(
   {} as IAuthContextProvier
@@ -20,17 +21,18 @@ export const AuthContextProvier = createContext<IAuthContextProvier>(
 
 export function AuthContext({ children }: IAuthContext) {
   const [message, setMessage] = useState("")
+  const navigate = useNavigate()
 
   const singIn = (data: FieldValue<ISingIn>) => {
     toast.promise(
-      apiFake.post("/login", data).then((res: IResponseLogin) => {
+      apiHospital.post("auth/login", data).then((res: IResponseLogin) => {
         localStorage.setItem("@Token", res.data.accessToken);
-        localStorage.setItem("@Id_User", res.data.user.id);
+        navigate("/")
       }),
       {
         pending: "Carregando...",
         success: "Logado com sucesso",
-        error: "Email ou Senha incorreto",
+        error: "Email ou senha incorreto"
       }
     );
   };
@@ -53,9 +55,8 @@ export function AuthContext({ children }: IAuthContext) {
           cpf,
           age: ParseAge,
         })
-        .then((res) => {
-          
-          console.log(res.data);
+        .then(() => {
+          navigate("/verify")
         }),
       {
         pending: "Carregando...",
