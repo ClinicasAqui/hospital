@@ -10,7 +10,6 @@ export function HomeContext({ children }: IHomeContext) {
     const [loading, setLoading] = useState(true) 
 
     useEffect(() => {
-        setLoading(true)
         apiHospital.get("public/clinics").then(res => {
             setClinicas(res.data)
         }).finally(() => setLoading(false))
