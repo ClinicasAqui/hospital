@@ -10,7 +10,7 @@ export function HomePage() {
   return (
     <>
       <Header input={false} />
-      {!loading && (
+      {loading == false && (
           <div>
             <h2>Mais Avaliadas</h2>
             <div style={{ display: "flex", overflow: "scroll" }}>
@@ -22,7 +22,6 @@ export function HomePage() {
                 );
               })}
             </div>
-            
             <h2>A sua Região</h2>
             <div style={{ display: "flex", overflow: "scroll" }}>
               {clinica.clinics.map((elem) => {
