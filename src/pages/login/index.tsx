@@ -7,6 +7,7 @@ import { IoIosEyeOff } from "react-icons/io";
 import { AuthContextProvier } from "../../context/authContext";
 import { CardCl } from "../../components/cardClinic";
 import { Header } from "../../components/header";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
   const [visible, setVisible] = useState(false);
@@ -66,6 +67,8 @@ export const Login = () => {
         </span>
         <button type="submit">Entrar</button>
       </form>
+      <p>Você ainda não tem uma conta?</p>
+      <Link to="/register">register-se</Link>
     </>
   );
 };

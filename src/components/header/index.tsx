@@ -1,5 +1,5 @@
-import { ReactElement, useState } from "react";
-import { IInput } from "../../interfaces/headerInterface/header";
+import { ReactElement, useEffect, useState } from "react";
+import { IInput, Iuser } from "../../interfaces/headerInterface/header";
 import { styled, alpha } from '@mui/material/styles';
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
@@ -12,6 +12,8 @@ import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import logo from "../../assets/img/Hospital.png";
 import SearchIcon from '@mui/icons-material/Search';
 import EventIcon from "@mui/icons-material/Event";
@@ -19,12 +21,15 @@ import { useNavigate } from "react-router-dom";
 import {  Button, Input, Toolbar } from "@mui/material";
 import { ConteineirHeader, ConteinerAvatar, ConteinerLogoHeader } from "./styled";
 import InputBase from '@mui/material/InputBase';
+import { apiHospital } from "../../services/apiHospital";
 
 
 export function Header({ input }: IInput): ReactElement {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const token = localStorage.getItem("@Token")
+  const [user, setUser] = useState<Iuser>({} as Iuser)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -32,7 +37,19 @@ export function Header({ input }: IInput): ReactElement {
     setAnchorEl(null);
   };
 
-  
+  useEffect(() => {
+    console.log(token)
+    console.log(user)
+
+    token !== null &&
+      apiHospital.get('user', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then(res => setUser(res.data.users))
+
+    
+  }, [token])
 
   return (
     <ConteineirHeader>
@@ -121,7 +138,13 @@ export function Header({ input }: IInput): ReactElement {
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
-              <Avatar src="https://lh3.googleusercontent.com/a-/AFdZucpfRpIW9EUJmNsh-Tupd8h883Iya1Jeys_Zpp-J=s317-p-rw-no"></Avatar>
+              {
+                token !== null && user.avatar === null ?
+                    <Avatar></Avatar>
+                  :
+                    <Avatar src={user.avatar} ></Avatar>
+              }
+              
             </IconButton>
           </Tooltip>
         </Box>
@@ -160,34 +183,74 @@ export function Header({ input }: IInput): ReactElement {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <MenuItem>
-            <Avatar src="https://lh3.googleusercontent.com/a-/AFdZucpfRpIW9EUJmNsh-Tupd8h883Iya1Jeys_Zpp-J=s317-p-rw-no" />{" "}
-            Perfil
-          </MenuItem>
-          <Divider />
-          <MenuItem>
-            <ListItemIcon>
-              <Settings fontSize="small" />
-            </ListItemIcon>
-            Configurações
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <EventIcon fontSize="small" />
-            </ListItemIcon>
-            Agenda
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              localStorage.clear();
-              navigate("/login");
-            }}
-          >
-            <ListItemIcon>
-              <Logout fontSize="small" />
-            </ListItemIcon>
-            Sair
-          </MenuItem>
+          {
+              token !== null ? 
+              <>
+                <MenuItem>
+                  {
+                      token === '' && user.avatar === null ?
+                        <>
+                          <Avatar></Avatar>
+                          Perfil
+                        </>
+                        :
+                        <>
+                          <Avatar></Avatar>
+                          Perfil
+                        </>  
+                    }
+                  
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  Configurações
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <EventIcon fontSize="small" />
+                  </ListItemIcon>
+                  Agenda
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate("/login");
+                  }}
+                >
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Sair
+                </MenuItem>
+              </>
+            :
+            <>
+                <MenuItem
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate("/login");
+                  }}
+                >
+                  <ListItemIcon>
+                    <VpnKeyIcon fontSize="small" />
+                  </ListItemIcon>
+                  Login
+                </MenuItem>
+                <MenuItem
+              onClick={() => {
+                localStorage.clear();
+                navigate("/register");
+              }}>
+                  <ListItemIcon>
+                    <LockOpenIcon fontSize="small" />
+                  </ListItemIcon>
+                  Registrar
+                </MenuItem>
+            </>
+          }
         </Menu>
       </ConteinerAvatar>
     </ConteineirHeader>
