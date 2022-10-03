@@ -38,9 +38,6 @@ export function Header({ input }: IInput): ReactElement {
   };
 
   useEffect(() => {
-    console.log(token)
-    console.log(user)
-
     token !== null &&
       apiHospital.get('user', {
         headers: {
